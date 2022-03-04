@@ -7,4 +7,4 @@ def gen(n):
   yield a**2
   a += 1
 
-print(*list(gen(n)))
+print(list(gen(n)))

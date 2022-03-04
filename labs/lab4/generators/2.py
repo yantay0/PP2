@@ -1,6 +1,5 @@
 n = int(input())
 
-
 def gen(n):
  a = 0
  while a <= n:
