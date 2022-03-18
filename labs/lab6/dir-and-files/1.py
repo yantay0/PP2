@@ -1,6 +1,11 @@
 import os
-path = input()
+path , all = input() , []
 os.chdir(path)
 dirs = os.listdir(path)
 
-for i in dirs : print(f'<DIR> {i}' if os.path.isdir(i) else f'<FILE> {i}')
+print("All directories and files : " , *[x for x in dirs] , sep='\n')
+print("Only directories: ", *[x for x in dirs if os.path.isdir(x)], sep='\n')
+print("Only files: ", *[x for x in dirs if os.path.isfile(x)], sep = '\n')
+
+
+
