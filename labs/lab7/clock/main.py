@@ -1,7 +1,8 @@
 import pygame
 from math import pi, cos, sin
-import datetime
+import datetime , os
 
+os.chdir(r'\Users\Madina\Desktop\PP2\labs\lab7\clock')
 WIDTH, HEIGHT = 600, 450
 center = (WIDTH / 2, HEIGHT / 2)
 

@@ -1,5 +1,4 @@
-from os import curdir
-import pygame , re
+import pygame , re , os
 from pygame import mixer
 
 # Initializing pygame
@@ -7,6 +6,7 @@ pygame.init()
 font = pygame.font.Font('freesansbold.ttf', 18)
 font_for_guide = pygame.font.Font('freesansbold.ttf', 16)
 
+os.chdir(r'\Users\Madina\Desktop\PP2\labs\lab7\Musical Player')
 
 # Creating screen
 WIDTH = 780
