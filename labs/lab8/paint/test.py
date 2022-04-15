@@ -1,6 +1,6 @@
-from turtle import circle
-import pygame
 import button
+import pygame
+
 
 pygame.init()
 WINDOW_WIDTH = 650
@@ -17,7 +17,7 @@ YELLOW = (255, 255, 0)
 
 # creating a screen
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-baselayer = pygame.Surface((WINDOW_WIDTH,WINDOW_HEIGHT))
+baselayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
 baselayer.fill(WHITE)
 screen.fill(WHITE)
 clock = pygame.time.Clock()
@@ -35,6 +35,7 @@ col_8 = pygame.Rect(67, 42, 27, 27)
 col_9 = pygame.Rect(98, 42, 32, 32)
 col_10 = pygame.Rect(131, 42, 32, 32)
 
+
 def draw_selector():
   pygame.draw.rect(screen, (186, 192, 192), selector_rect, 100)
   pygame.draw.rect(screen, BLACK, col_1, 20)
@@ -50,7 +51,6 @@ def draw_selector():
   screen.blit(pen_Im, (131, 40))
   screen.blit(eraser_Im, (98, 40))
   screen.blit(rect_Im, (98, 10))
-  screen.blit(circle_Im,(131,10))
 
 
 def pencil():
@@ -70,9 +70,6 @@ isMouseDown = False
 def calculateRect(x1, y1, x2, y2):
     return pygame.Rect(min(x1, x2), min(y1, y2), abs(x1 - x2), abs(y1 - y2))
 
-def calculateCircle(x1, y1, x2, y2):
-    r = max(abs(x2 - x1), abs(y2 - y1))
-    pygame.draw.circle(screen, current_color, (x1, y1), r)
 
 #buttons
 pen_Im = pygame.image.load(
@@ -81,49 +78,39 @@ eraser_Im = pygame.image.load(
     r'C:\Users\Madina\Desktop\mine\python\paint\images\eraser.png').convert_alpha()
 rect_Im = pygame.image.load(
     r'C:\Users\Madina\Desktop\mine\python\paint\images\rect.png').convert_alpha()
-circle_Im = pygame.image.load(
-    r'C:\Users\Madina\Desktop\PP2\labs\lab8\paint\images\circle.png').convert_alpha()
 
 pen_button = button.Button(131, 40, pen_Im, 0.8)
 eraser_button = button.Button(98, 40, eraser_Im, 0.8)
 rect_button = button.Button(98, 10, rect_Im, 0.8)
-circle_button = button.Button(131,10,circle_Im,0.8)
 
 
 current_color = BLACK
 prev, cur = None, None  # variables for pencil button
-
-pen_tool, eraser_tool, circle_tool, rect_tool = False, False, False, False,
-
+#current_tool = True
+pen_tool = False
+rect_tool = False
+eraser_tool = False
 running = True
 while running:
 
- if pen_button.draw(screen):
-        pen_tool = True
+  if pen_button.draw(screen):
+    pen_tool = True
+    rect_tool = False
+    current_color = BLACK
+  if eraser_button.draw(screen):
+   current_color = WHITE
+   pen_tool = True
+   rect_tool = False
+  if rect_button.draw(screen):
+   rect_tool = True
+   pen_tool = False
+   current_color = BLACK
 
-   # current_color = BLACK
- elif eraser_button.draw(screen):
-        current_color = WHITE
-        pen_tool = True
-        rect_tool = False
-        circle_tool = False
-
- elif rect_button.draw(screen):
-        rect_tool = True
-
-
-
- elif circle_button.draw(screen):
-        circle_tool = True
-
-
-
-
- for event in pygame.event.get():
+  for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
     if pen_tool:
-     rect_tool = False
+     #rect_tool = False
      if event.type == pygame.MOUSEBUTTONDOWN:
         prev = pygame.mouse.get_pos()
      if event.type == pygame.MOUSEMOTION:
@@ -132,12 +119,12 @@ while running:
          pencil()
      if event.type == pygame.MOUSEBUTTONUP:
       prev = None
-    elif rect_tool :
-          pen_tool = False
+    elif rect_tool:
+          #pen_tool = False
           if event.type == pygame.MOUSEBUTTONDOWN:
                if event.button == 1:
                     isMouseDown = True
-                    currentX  = event.pos[0]
+                    currentX = event.pos[0]
                     currentY = event.pos[1]
                     prevX = event.pos[0]
                     prevY = event.pos[1]
@@ -146,11 +133,11 @@ while running:
                isMouseDown = False
                baselayer.blit(screen, (0, 0))
 
-          if event.type == pygame.MOUSEMOTION:
+  if event.type == pygame.MOUSEMOTION:
                if isMouseDown:
                     currentX = event.pos[0]
                     currentY = event.pos[1]
-    if rect_button: 
+  if rect_button: 
      if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
       screen.blit(baselayer, (0, 0))
       r = calculateRect(prevX, prevY, currentX, currentY)
@@ -159,24 +146,13 @@ while running:
           screen.blit(baselayer, (0, 0))
           r = calculateRect(prevX, prevY, currentX, currentY)
           pygame.draw.rect(screen, current_color, pygame.Rect(r), 1)
-    '''if circle_tool:
-     if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-      screen.blit(baselayer, (0, 0))
-      r = calculateCircle(prevX, prevY, currentX, currentY)
-      pygame.draw.rect(screen, BLACK, pygame.Rect(r), 1)
-      if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-          screen.blit(baselayer, (0, 0))
-          r = calculateRect(prevX, prevY, currentX, currentY)
-          pygame.draw.rect(screen, current_color, pygame.Rect(r), 1)
-    '''
+    
 
 
-  
- 
 
   # COLOR SELECTION
- select = pygame.mouse.get_pressed()
- if select[0] == 1:
+  select = pygame.mouse.get_pressed()
+  if select[0] == 1:
       mouse_pos = pygame.mouse.get_pos()
       if 7 < mouse_pos[0] < 34 and 12 < mouse_pos[1] < 39:
           current_color = BLACK
@@ -191,8 +167,7 @@ while running:
       elif 67 < mouse_pos[0] < 94 and 42 < mouse_pos[1] < 69:
           current_color = YELLOW
 
- draw_selector()
+  draw_selector()
 
- pygame.display.flip()
- clock.tick(30)
-
+  pygame.display.flip()
+  clock.tick(30)
