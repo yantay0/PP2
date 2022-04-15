@@ -1,4 +1,3 @@
-from turtle import circle
 import pygame
 import button
 
@@ -93,28 +92,28 @@ circle_button = button.Button(131,10,circle_Im,0.8)
 current_color = BLACK
 prev, cur = None, None  # variables for pencil button
 
-pen_tool, eraser_tool, circle_tool, rect_tool = False, False, False, False,
+pen_tool = False
+rect_tool = False
+eraser_tool = False
 
 running = True
 while running:
-
  if pen_button.draw(screen):
-        pen_tool = True
+    pen_tool = True
+    rect_tool = False
+    current_color = BLACK
+ if eraser_button.draw(screen):
+   current_color = WHITE
+   pen_tool = True
+   rect_tool = False
 
-   # current_color = BLACK
- elif eraser_button.draw(screen):
-        current_color = WHITE
-        pen_tool = True
-        rect_tool = False
-        circle_tool = False
+ if rect_button.draw(screen):
+   rect_tool = True
+   pen_tool = False
+   current_color = BLACK
 
- elif rect_button.draw(screen):
-        rect_tool = True
-
-
-
- elif circle_button.draw(screen):
-        circle_tool = True
+# if circle_button.draw(screen):
+ #       circle_tool = True
 
 
 
@@ -132,7 +131,7 @@ while running:
          pencil()
      if event.type == pygame.MOUSEBUTTONUP:
       prev = None
-    elif rect_tool :
+    if rect_tool :
           pen_tool = False
           if event.type == pygame.MOUSEBUTTONDOWN:
                if event.button == 1:
@@ -150,8 +149,8 @@ while running:
                if isMouseDown:
                     currentX = event.pos[0]
                     currentY = event.pos[1]
-    if rect_button: 
-     if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
+ #if rect_button: 
+ if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
       screen.blit(baselayer, (0, 0))
       r = calculateRect(prevX, prevY, currentX, currentY)
       pygame.draw.rect(screen, BLACK, pygame.Rect(r), 1)
@@ -159,20 +158,7 @@ while running:
           screen.blit(baselayer, (0, 0))
           r = calculateRect(prevX, prevY, currentX, currentY)
           pygame.draw.rect(screen, current_color, pygame.Rect(r), 1)
-    '''if circle_tool:
-     if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-      screen.blit(baselayer, (0, 0))
-      r = calculateCircle(prevX, prevY, currentX, currentY)
-      pygame.draw.rect(screen, BLACK, pygame.Rect(r), 1)
-      if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-          screen.blit(baselayer, (0, 0))
-          r = calculateRect(prevX, prevY, currentX, currentY)
-          pygame.draw.rect(screen, current_color, pygame.Rect(r), 1)
-    '''
 
-
-  
- 
 
   # COLOR SELECTION
  select = pygame.mouse.get_pressed()

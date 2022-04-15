@@ -1,6 +1,5 @@
-import button
 import pygame
-
+import button
 
 pygame.init()
 WINDOW_WIDTH = 650
@@ -35,7 +34,6 @@ col_8 = pygame.Rect(67, 42, 27, 27)
 col_9 = pygame.Rect(98, 42, 32, 32)
 col_10 = pygame.Rect(131, 42, 32, 32)
 
-
 def draw_selector():
   pygame.draw.rect(screen, (186, 192, 192), selector_rect, 100)
   pygame.draw.rect(screen, BLACK, col_1, 20)
@@ -60,10 +58,10 @@ def pencil():
 
 
 # draw rectangle mode
-prevX = 0
-prevY = 0
-currentX = 0
-currentY = 0
+prevX = -1
+prevY = -1
+currentX = -1
+currentY = -1
 isMouseDown = False
 
 
@@ -97,6 +95,7 @@ while running:
     pen_tool = True
     rect_tool = False
     current_color = BLACK
+
   if eraser_button.draw(screen):
    current_color = WHITE
    pen_tool = True
@@ -119,6 +118,7 @@ while running:
          pencil()
      if event.type == pygame.MOUSEBUTTONUP:
       prev = None
+
     elif rect_tool:
           #pen_tool = False
           if event.type == pygame.MOUSEBUTTONDOWN:
@@ -133,22 +133,19 @@ while running:
                isMouseDown = False
                baselayer.blit(screen, (0, 0))
 
-  if event.type == pygame.MOUSEMOTION:
+          if event.type == pygame.MOUSEMOTION:
                if isMouseDown:
                     currentX = event.pos[0]
                     currentY = event.pos[1]
-  if rect_button: 
-     if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-      screen.blit(baselayer, (0, 0))
+
+    if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
+      screen.blit(screen, (0, 0))
       r = calculateRect(prevX, prevY, currentX, currentY)
       pygame.draw.rect(screen, BLACK, pygame.Rect(r), 1)
       if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
-          screen.blit(baselayer, (0, 0))
+          screen.blit(screen, (0, 0))
           r = calculateRect(prevX, prevY, currentX, currentY)
           pygame.draw.rect(screen, current_color, pygame.Rect(r), 1)
-    
-
-
 
   # COLOR SELECTION
   select = pygame.mouse.get_pressed()

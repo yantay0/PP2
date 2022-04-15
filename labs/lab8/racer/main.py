@@ -10,7 +10,7 @@ FPS = 60
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 STEP = 5
-ENEMTY_STEP = 10
+ENEMTY_STEP = 10 #coin's speed
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -25,10 +25,12 @@ score_font = pygame.font.SysFont("Verdana", 25)
 SURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Street Racer")
 
+
+# background image
 bg = pygame.image.load(
     r"C:\Users\Madina\Desktop\mine\python\racer\AnimatedStreet.png")
 
-
+# class for coins
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -38,7 +40,10 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
     def update(self):
-        global SCORE
+        global SCORE , ENEMTY_STEP
+        if SCORE == 10 : ENEMTY_STEP = 15
+        if SCORE == 20:  ENEMTY_STEP = 20
+
         self.rect.move_ip(0, ENEMTY_STEP)
         if(self.rect.bottom > SCREEN_HEIGHT):
            # SCORE += 1
@@ -52,7 +57,7 @@ class Enemy(pygame.sprite.Sprite):
      self.top = 0
      self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
-
+# class for the car 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -73,8 +78,9 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+    
 
-
+# collobaration of coin and the car
 class MAIN(pygame.sprite.Sprite):
  def __init__(self):
   self.enemy = Enemy()
@@ -89,7 +95,7 @@ class MAIN(pygame.sprite.Sprite):
   global SCORE
   enemies = pygame.sprite.Group()
   enemies.add(self.enemy)
-  if pygame.sprite.spritecollideany(self.player, enemies):
+  if pygame.sprite.spritecollideany(self.player, enemies): # score is increasing  if player and enemy collides
    self.enemy.randomize()
    SCORE += 1
    pygame.mixer.Sound(
@@ -100,15 +106,6 @@ class MAIN(pygame.sprite.Sprite):
   self.player.draw(surface)
 
 
-P1 = Player()
-E1 = Enemy()
-
-enemies = pygame.sprite.Group()
-#enemies.add(E1)
-n = random.randint(0, 4)
-for i in range(n):
- E1 = Enemy()
- enemies.add(E1)
 
 main_game = MAIN()
 
@@ -118,16 +115,10 @@ while True:
             pygame.quit()
             sys.exit()
 
-    main_game.update()
-    #enemies.update()
-
-    #if pygame.sprite.spritecollideany(P1, enemies):
-
-    main_game.check_collision()
-
     SURF.blit(bg, (0, 0))
 
-    #enemies.draw(SURF)
+    main_game.update()
+    main_game.check_collision()
     main_game.draw_element(SURF)
 
     score_img = score_font.render(str(SCORE), True, BLACK)

@@ -3,8 +3,12 @@ import sys
 import random , time
 from pygame.math import Vector2
 from pygame import mixer
-
-
+# initializing pygame
+pygame.init()
+# timer
+font = pygame.font.SysFont('Consolas', 30)
+counter, text = 10, '10'.rjust(3)
+text = str(counter).rjust(3)
 level = 1
 snake_color = (0, 0, 255)
 
@@ -55,7 +59,6 @@ class FRUIT:
   self.y = random.randint(0, cell_number - 3)
   self.pos = Vector2(self.x, self.y)
 
-
 class MAIN:
  def __init__(self):
   # class main inherits all methods from class SNAKE and class FRUIT
@@ -95,14 +98,24 @@ class MAIN:
    time.sleep(2)   
    pygame.quit
    sys.exit()
-
+   '''
+ def timer(self):
+   global level , counter
+   if level == 3 :
+     counter -= 1
+     text = str(counter).rjust(3) 
+     if counter == 0 :
+        self.fruit.randomize() 
+        counter = 10
+     screen.blit(font.render(text, True, (255, 0, 0)), (10, 10))]'''
  #level conditons
  def draw_score(self):
    global level
    if len(self.snake.body)-3 == 5:
      level = 2
-   elif len(self.snake.body)-3 == 20:
+   elif len(self.snake.body)-3 == 2:
      level = 3
+
 
  # score table
    score_text = str(len(self.snake.body)-3) + f' level : {level}'
@@ -114,17 +127,18 @@ class MAIN:
        midright=(score_rect.left, score_rect.centery))
    bg_rect = pygame.Rect(apple_rect.left, apple_rect.top,
                          apple_rect.width + score_rect.width+6, apple_rect.height)
+  
 
    pygame.draw.rect(screen, (56, 75, 12), bg_rect, 2)
    screen.blit(score_surface, score_rect)
    screen.blit(apple_score, apple_rect)
+  
 
 
-# initializing pygame
-pygame.init()
 
 mixer.init()
 mixer.Sound(r'C:\Users\Madina\Desktop\PP2\labs\lab8\snake\resources\bg_music_1.mp3').play() # background music
+
 
 # creation of illuison of a grid
 cell_size = 30
@@ -142,9 +156,13 @@ game_font = pygame.font.Font(
 
 # the whole game (snake moving , apperince of fruits) is conluded in this class
 main_game = MAIN()
-# condition if there is new actions like clicking an arrow on thw keyboard then t
+
+
 SCREEN_UPDATE = pygame.USEREVENT
 
+
+INC_SPEED = pygame.USEREVENT + 1
+set_timer = pygame.time.set_timer(INC_SPEED, 3000)
 speed = 150
 #snake_speed = pygame.time.set_timer(SCREEN_UPDATE ,speed) # speed
 
@@ -163,7 +181,13 @@ while True:
      if level == 3:
        snake_color = (0, 0, 0)
        speed = 70
-
+  
+       counter -= 1
+       
+       #if event.type == pygame.USEREVENT:
+      #pygame.time.set_timer(pygame.USEREVENT, 1000)
+       #font = pygame.font.SysFont('Consolas', 30)
+      # screen.blit(font.render(text, True, (255, 0, 0)), (10, 10))
   # conditions when a user pressing a button(an arrow)
   if event.type == pygame.KEYDOWN:
    if event.key == pygame.K_UP:
@@ -182,6 +206,8 @@ while True:
 # game going to ignore when the snake tries to pass through itself
 
  screen.fill((102, 167, 67))  # color of the screen
+ text = str(counter).rjust(3)
+ screen.blit(font.render(text, True, (255, 0, 0)), (10, 10))
  main_game.draw_element()  # our elements of the game will appear
  pygame.display.update()
  clock.tick(60)  # 60 loops per minute
