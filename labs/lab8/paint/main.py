@@ -65,7 +65,7 @@ currentX = 0
 currentY = 0
 isMouseDown = False
 
-
+# coordinates for Rectangle
 def calculateRect(x1, y1, x2, y2):
     return pygame.Rect(min(x1, x2), min(y1, y2), abs(x1 - x2), abs(y1 - y2))
 
@@ -98,7 +98,7 @@ eraser_tool = False
 
 running = True
 while running:
- if pen_button.draw(screen):
+ if pen_button.draw(screen): # when user is clicking tool  is True
     pen_tool = True
     rect_tool = False
     current_color = BLACK
@@ -111,10 +111,6 @@ while running:
    rect_tool = True
    pen_tool = False
    current_color = BLACK
-
-# if circle_button.draw(screen):
- #       circle_tool = True
-
 
 
 

@@ -1,6 +1,4 @@
 import random
-from re import I
-from secrets import randbelow
 import sys
 import pygame
 
@@ -18,8 +16,6 @@ BLACK = (0, 0, 0)
 SCORE = 0
 
 clock = pygame.time.Clock()
-
-
 score_font = pygame.font.SysFont("Verdana", 25)
 
 SURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -96,7 +92,7 @@ class MAIN(pygame.sprite.Sprite):
   enemies = pygame.sprite.Group()
   enemies.add(self.enemy)
   if pygame.sprite.spritecollideany(self.player, enemies): # score is increasing  if player and enemy collides
-   self.enemy.randomize()
+   self.enemy.randomize()  # coin is disappering  
    SCORE += 1
    pygame.mixer.Sound(
        r'C:\Users\Madina\Desktop\mine\python\racer\coin.wav').play()
@@ -121,7 +117,7 @@ while True:
     main_game.check_collision()
     main_game.draw_element(SURF)
 
-    score_img = score_font.render(str(SCORE), True, BLACK)
+    score_img = score_font.render(str(SCORE), True, BLACK)  # score table
     SURF.blit(score_img, (350, 10))
 
     pygame.display.update()
