@@ -113,7 +113,7 @@ class MAIN:
    global level
    if len(self.snake.body)-3 == 5:
      level = 2
-   elif len(self.snake.body)-3 == 2:
+   elif len(self.snake.body)-3 == 15:
      level = 3
 
 

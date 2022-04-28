@@ -145,8 +145,8 @@ while running:
                if isMouseDown:
                     currentX = event.pos[0]
                     currentY = event.pos[1]
- #if rect_button: 
- if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
+ if rect_button: 
+  if isMouseDown and prevX != -1 and prevY != -1 and currentX != -1 and currentY != -1:
       screen.blit(baselayer, (0, 0))
       r = calculateRect(prevX, prevY, currentX, currentY)
       pygame.draw.rect(screen, BLACK, pygame.Rect(r), 1)
